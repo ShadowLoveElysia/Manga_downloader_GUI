@@ -45,10 +45,20 @@ class Downloader:
     '''
 
     def __init__(
-            self, manga_url, cookies, imgdir, res, sleep_time=2, loading_wait_time=20,
+            self, manga_url=None, cookies=None, imgdir=None, res=None, sleep_time=1, loading_wait_time=20,
             cut_image=None, file_name_prefix='', number_of_digits=3, start_page=None,
-            end_page=None
+            end_page=None,
+            chrome_binary=None,  # 新增：Chrome浏览器路径
+            chromedriver_path=None  # 新增：ChromeDriver路径
     ):
+        '''
+        Initialize parameters
+        '''
+        
+        # GUI传入的新参数
+        self.chrome_binary = chrome_binary  # Chrome浏览器路径
+        self.chromedriver_path = chromedriver_path  # ChromeDriver路径
+
         self.manga_url = manga_url
         self.cookies = get_cookie_dict(cookies)
         self.imgdir = imgdir
@@ -86,15 +96,30 @@ class Downloader:
                 base64.b64encode(bytes(str, 'utf-8')).decode('ascii'))
 
     def get_driver(self):
+        '''
+        Get a webdriver
+        '''
         option = uc.ChromeOptions()
-        option.set_capability('unhandledPromptBehavior', 'accept')
-        option.add_argument('--high-dpi-support=1')
-        option.add_argument('--device-scale-factor=1')
-        option.add_argument('--force-device-scale-factor=1')
-        option.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
-        option.add_argument("--app=%s" % self.str_to_data_uri('Manga_downloader'))
+        # This is mandatory for Mangafox
+        option.add_argument(f'--window-size={self.res[0]},{self.res[1]}')
+        
         option.add_argument('--headless')
-        self.driver = uc.Chrome(options=option)
+        option.add_argument('--disable-gpu')
+        option.add_argument('--no-sandbox')
+        option.add_argument('--disable-dev-shm-usage')
+        option.add_argument('--disable-extensions')
+        option.add_argument('--disable-software-rasterizer')
+        option.add_argument('--disable-features=VizDisplayCompositor')
+        
+        # 如果设置了Chrome路径，则使用指定的路径
+        if self.chrome_binary:
+            option.binary_location = self.chrome_binary
+        
+        # 如果设置了ChromeDriver路径，则使用指定的路径
+        if self.chromedriver_path:
+            self.driver = uc.Chrome(executable_path=self.chromedriver_path, options=option)
+        else:
+            self.driver = uc.Chrome(options=option)
         self.driver.set_window_size(self.res[0], self.res[1])
         viewport_dimensions = self.driver.execute_script("return [window.innerWidth, window.innerHeight];")
         logging.info('Viewport dimensions %s', viewport_dimensions)

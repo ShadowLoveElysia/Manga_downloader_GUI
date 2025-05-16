@@ -1,4 +1,12 @@
-# NEW METHOD FOR BW TO TRY!
+# Manga Downloader
+
+<p align="right">
+  <a href="README.md">English</a> |
+  <a href="README_CN.md"><span style="color:blue">中文</span></a> |
+  <a href="README_JP.md"><span style="color:blue">日本語</span></a>
+</p>
+
+## NEW METHOD FOR BW TO TRY!
 
 # New Version
 ## v0.3.3 (Update Recommended)
@@ -6,6 +14,44 @@
 - Better support for BW books page number pattern, support novels.
 
 Download it in the [release](https://github.com/xuzhengyi1995/Manga_downloader/releases/tag/BW-downloader-chrome-v0.3.3) or here: [Windows x64 release build v0.3.3](https://github.com/xuzhengyi1995/Manga_downloader/releases/download/BW-downloader-chrome-v0.3.3/BW-downloader-chrome-v0.3.3.7z)
+
+## GUI Usage Guide
+
+This project now provides a graphical user interface, which greatly simplifies the usage process. We strongly recommend using the GUI!
+
+### Starting the GUI
+
+```bash
+python app.py
+```
+
+### GUI Features
+
+The GUI interface includes multiple tabs:
+
+1. **Download Settings**: Configure manga download parameters
+2. **Console Output**: View detailed output of the download process
+3. **Image to PDF**: Merge downloaded images into a PDF file
+
+### Multi-language Support
+
+The GUI supports multiple languages:
+- Chinese
+- English
+- Japanese
+
+You can switch the interface language through the "Language" option in the top menu bar.
+
+### Chrome Settings
+
+Select "File -> Settings" in the menu bar to configure:
+- Project root directory
+- Chrome browser path
+- ChromeDriver path
+
+Make sure the Chrome version and ChromeDriver version in the settings match, otherwise the download may fail.
+
+---
 
 ## v0.3.2
 This version has some good features below for BW:
@@ -425,3 +471,5 @@ settings = {
         '''
         driver.execute_script('parent.closeTips()')
     ```
+
+---
